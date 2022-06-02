@@ -3,61 +3,87 @@
 #include <iostream>
 #include <string>
 
-namespace
-{
-  void argNotFoundError(std::string err)
-  {
-    throw std::runtime_error("Error: argument " + err + " not present");
-  }
-}
+#include <boost/program_options.hpp>
+
+namespace po = boost::program_options;
+
 Params::Params(int argc, char** argv):
-    m_minX(), m_minY(), m_maxX(), m_maxY()
+    m_minX(), m_minY(), m_maxX(), m_maxY(), m_exit(false)
 {
-  if (argc == 1)
-  {
-    std::cout << "Usage: fractalgen --xmin xmin --xmax"
-                 " xmax --ymin ymin --ymax ymax --type "
-                 " fractal --color color";
-    return;
-  }
+    po::options_description desc("Allowed options");
+    desc.add_options()
+        ("help,h", "produce this help message")
+        ("xmin,a", po::value<double>(), "minimum x value")
+        ("xmax,b", po::value<double>(), "maximum x value")
+        ("ymin,c", po::value<double>(), "minimum y value")
+        ("ymax,d", po::value<double>(), "maximum y value")
+        ("palette,p", po::value<std::string>(), "path of palette file")
+        ("fractal,f", po::value<std::string>(), "fractal type")
+        ;
 
-  for (int i = 0; i < argc; i++)
-  {
-    if (strcmp(argv[i], "--xmin"))
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);
+
+    if (vm.count("help"))
     {
-      if (i < argc - 2)
-        m_minX = atof(argv[i + 1]);
-      else
-        argNotFoundError("xmin");
+        std::cout << desc << std::endl;
+        m_exit = true;
+        return;
     }
 
-    if (strcmp(argv[i], "--xmax"))
+    if (vm.count("xmin"))
     {
-      if (i < argc - 2)
-        m_maxX = atof(argv[i + 1]);
-      else
-        argNotFoundError("xmax");
+        m_minX = vm["xmin"].as<double>();
     }
-
-    if (strcmp(argv[i], "--ymin"))
+    else
     {
-      if (i < argc - 2)
-        m_minY = atof(argv[i + 1]);
-      else
-        argNotFoundError("ymin");
+        std::cout << "required param xmin not specified." << std::endl;
+        m_exit = true;
     }
-
-    if (strcmp(argv[i], "--ymax"))
+    if (vm.count("xmax"))
     {
-      if (i < argc - 2)
-        m_maxY = atof(argv[i + 1]);
-      else
-        argNotFoundError("ymax");
+        m_maxX = vm["xmax"].as<double>();
     }
-  }
-
-  std::cout << "xmin: " << std::to_string(m_minX) <<
-    "xmax: " << std::to_string(m_maxX) << 
-    "ymin: " << std::to_string(m_minY) <<
-    "ymax: " << std::to_string(m_maxY) << std::endl;
+    else
+    {
+        std::cout << "required param xmax not specified." << std::endl;
+        m_exit = true;
+    }
+    if (vm.count("ymin"))
+    {
+        m_minY = vm["ymin"].as<double>();
+    }
+    else
+    {
+        std::cout << "required param ymin not specified." << std::endl;
+        m_exit = true;
+    }
+    if (vm.count("ymax"))
+    {
+        m_maxY = vm["ymax"].as<double>();
+    }
+    else
+    {
+        std::cout << "required param ymax not specified." << std::endl;
+        m_exit = true;
+    }
+    if (vm.count("palette"))
+    {
+        m_palette = vm["palette"].as<std::string>();
+    }
+    else
+    {
+        std::cout << "required param palette not specified." << std::endl;
+        m_exit = true;
+    }
+    if (vm.count("fractal"))
+    {
+        m_fractal = vm["fractal"].as<std::string>();
+    }
+    else
+    {
+        std::cout << "required param fractal not specified." << std::endl;
+        m_exit = true;
+    }
 }

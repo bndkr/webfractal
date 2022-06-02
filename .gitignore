@@ -1,3 +1,5 @@
 _bld/
+.vscode
+
 *.o
 *.exe
