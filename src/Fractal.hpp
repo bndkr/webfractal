@@ -6,7 +6,8 @@
 class Fractal
 {
 public:
-    Fractal() {}
+    Fractal(uint32_t iterations, double beginX, double beginY) :
+        m_iterations(iterations), m_beginX(beginX), m_beginY(beginY) {}
     virtual float getPixel(double x, double y) = 0;
 
 private:
