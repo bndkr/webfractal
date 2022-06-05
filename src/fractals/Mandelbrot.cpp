@@ -2,5 +2,31 @@
 
 float Mandelbrot::getPixel(double x, double y)
 {
-    return static_cast<float>(x + y);
+    typedef boost::multiprecision::cpp_complex_oct Complex; 
+
+    Complex z = {0, 0};
+    Complex before = {0, 0};
+    Complex c = {x, y};
+
+    uint32_t iteration = 0;
+    while(abs(z) < 2 && iteration < m_iterations)
+    {
+        before = z;
+        z = (z * z) + c;
+        iteration++;
+    }
+    if (iteration == m_iterations)
+    {
+        return -1.0f; // inside the mandelbrot set
+    }
+    auto min = abs(before);
+    auto max = abs(z);
+
+    auto gradient = static_cast<float>((2 - min) / (max - min));// min is greater than 2. why?
+    if (gradient < 0)
+    {
+        std::cout << "g: " << gradient << std::endl;
+    }
+    return iteration + gradient;
+
 }

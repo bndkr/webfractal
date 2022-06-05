@@ -187,3 +187,32 @@ void Palette::printPalette()
 			<< c.blue << std::endl;
     }
 }
+
+Color Palette::iterationsToColor(float iterations)
+{
+	// TODO: inner color
+	if (iterations == -1.0f)
+	{
+		return Color{0, 0, 0};
+	}
+	uint32_t step = static_cast<uint32_t>(iterations);
+	auto gradient = iterations - step; // how 'inbetween' the color is, between 0 and 1
+	
+	step = step % m_steps; // m_steps is the number of colors in the palette
+
+	auto baseColor = getColor(step);
+	auto newColor = getColor((step + 1) % m_steps);
+	Color inbetweenColor({});
+	
+	// interpolate between baseColor and newColor
+	inbetweenColor.red = 
+		baseColor.red + (newColor.red - baseColor.red) * gradient;
+
+	inbetweenColor.blue = 
+		baseColor.blue + (newColor.blue - baseColor.blue) * gradient;
+
+	inbetweenColor.green =
+		 baseColor.green + (newColor.green - baseColor.green) * gradient;
+
+	return inbetweenColor;
+}

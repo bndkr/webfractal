@@ -23,6 +23,8 @@ public:
 
 	Color getColor(uint32_t const& index);
 
+	Color iterationsToColor(float iterations);
+
 	void printPalette();
 
 	uint32_t m_steps; // number of colors in palette
