@@ -17,6 +17,8 @@ Params::Params(int argc, char** argv):
         ("xmax,b", po::value<double>(), "maximum x value")
         ("ymin,c", po::value<double>(), "minimum y value")
         ("ymax,d", po::value<double>(), "maximum y value")
+        ("height,e", po::value<int>(), "height of image in pixels")
+        ("width,w", po::value<int>(), "width of image in pixels")
         ("palette,p", po::value<std::string>(), "path of palette file")
         ("fractal,f", po::value<std::string>(), "fractal type")
         ;
@@ -85,5 +87,21 @@ Params::Params(int argc, char** argv):
     {
         std::cout << "required param fractal not specified." << std::endl;
         m_exit = true;
+    }
+    if (vm.count("height"))
+    {
+        m_height = vm["height"].as<int>();
+    }
+    else
+    {
+        std::cout << "required param height not specified." << std::endl;
+    }
+    if (vm.count("width"))
+    {
+        m_width = vm["width"].as<int>();
+    }
+    else
+    {
+        std::cout << "required param width not specified." << std::endl;
     }
 }

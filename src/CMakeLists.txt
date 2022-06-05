@@ -6,6 +6,10 @@ add_subdirectory(fractals)
 set(fractal_src ${fractal_src} PARENT_SCOPE)
 
 set(src_list
+src/FileOps.cpp
+src/FileOps.hpp
+src/Generator.cpp
+src/Generator.hpp
 src/main.cpp
 src/Params.cpp
 src/Params.hpp

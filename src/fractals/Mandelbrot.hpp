@@ -1,7 +1,7 @@
 #ifndef MANDELBROT_HPP
 #define MANDELBROT_HPP
 
-#include <Fractal.hpp>
+#include <fractals/Fractal.hpp>
 
 class Mandelbrot : public virtual Fractal
 {

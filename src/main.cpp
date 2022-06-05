@@ -1,3 +1,4 @@
+#include "Generator.hpp"
 #include "Params.hpp"
 #include "Palette.hpp"
 
@@ -15,6 +16,8 @@ int main(int argc, char** argv)
             return 1;
         }
         Palette palette(params.m_palette, 90);
+
+        Generator generator(params);
         
     }
     catch (std::runtime_error e)
