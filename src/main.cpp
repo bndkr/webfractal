@@ -9,14 +9,13 @@ int main(int argc, char** argv)
 {
     try
     {
-        std::cin.get();
+        // std::cin.get();
         Params params(argc, argv);
         if (params.m_exit)
         {
             return 1;
         }
         Palette palette(params.m_palette, 90);
-        palette.printPalette();
         Generator generator(params, palette);
         
     }
