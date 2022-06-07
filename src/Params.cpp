@@ -8,7 +8,7 @@
 namespace po = boost::program_options;
 
 Params::Params(int argc, char** argv):
-    m_minX(), m_minY(), m_maxX(), m_maxY(), m_exit(false)
+    m_minX(), m_minY(), m_maxX(), m_maxY()
 {
     po::options_description desc("Allowed options");
     desc.add_options()
@@ -30,10 +30,8 @@ Params::Params(int argc, char** argv):
     if (vm.count("help"))
     {
         std::cout << desc << std::endl;
-        m_exit = true;
-        return;
+        exit(0);
     }
-
     if (vm.count("xmin"))
     {
         m_minX = vm["xmin"].as<double>();
@@ -41,7 +39,7 @@ Params::Params(int argc, char** argv):
     else
     {
         std::cout << "required param xmin not specified." << std::endl;
-        m_exit = true;
+        exit(1);
     }
     if (vm.count("xmax"))
     {
@@ -50,7 +48,7 @@ Params::Params(int argc, char** argv):
     else
     {
         std::cout << "required param xmax not specified." << std::endl;
-        m_exit = true;
+        exit(1);
     }
     if (vm.count("ymin"))
     {
@@ -59,7 +57,7 @@ Params::Params(int argc, char** argv):
     else
     {
         std::cout << "required param ymin not specified." << std::endl;
-        m_exit = true;
+        exit(1);
     }
     if (vm.count("ymax"))
     {
@@ -68,7 +66,7 @@ Params::Params(int argc, char** argv):
     else
     {
         std::cout << "required param ymax not specified." << std::endl;
-        m_exit = true;
+        exit(1);
     }
     if (vm.count("palette"))
     {
@@ -77,7 +75,7 @@ Params::Params(int argc, char** argv):
     else
     {
         std::cout << "required param palette not specified." << std::endl;
-        m_exit = true;
+        exit(1);
     }
     if (vm.count("fractal"))
     {
@@ -86,11 +84,12 @@ Params::Params(int argc, char** argv):
     else
     {
         std::cout << "required param fractal not specified." << std::endl;
-        m_exit = true;
+        exit(1);
     }
     if (vm.count("height"))
     {
         m_height = vm["height"].as<int>();
+        exit(1);
     }
     else
     {
@@ -99,9 +98,11 @@ Params::Params(int argc, char** argv):
     if (vm.count("width"))
     {
         m_width = vm["width"].as<int>();
+        exit(1);
     }
     else
     {
         std::cout << "required param width not specified." << std::endl;
+        exit(1);
     }
 }

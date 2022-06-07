@@ -12,7 +12,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 link_directories(${boost_link_path})
 
 source_group(fractals FILES ${fractal_src})
+source_group("" FILES ${src_list})
 
 add_executable(Fractal ${src_list})
 
-
+install(TARGETS Fractal DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Install)

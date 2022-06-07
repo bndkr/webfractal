@@ -1,6 +1,3 @@
-
-
-
 add_subdirectory(fractals)
 
 set(fractal_src ${fractal_src} PARENT_SCOPE)

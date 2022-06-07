@@ -11,13 +11,8 @@ int main(int argc, char** argv)
     {
         // std::cin.get();
         Params params(argc, argv);
-        if (params.m_exit)
-        {
-            return 1;
-        }
         Palette palette(params.m_palette, 90);
         Generator generator(params, palette);
-        
     }
     catch (std::runtime_error e)
     {
