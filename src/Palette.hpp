@@ -5,14 +5,6 @@
 
 #include <boost/unordered_map.hpp> 
 
-
-struct Color
-{
-	uint32_t red;
-	uint32_t green;
-	uint32_t blue;
-};
-
 class Palette
 {
 public:
@@ -21,9 +13,9 @@ public:
     void interpolate(uint32_t color1, uint32_t color2, uint32_t color3);
     void interpolate(uint32_t color1, uint32_t color2, uint32_t color3, uint32_t color4);
 
-	Color getColor(uint32_t const& index);
+	void getColor(uint32_t const& index, uint8_t& red, uint8_t& green, uint8_t& blue);
 
-	Color iterationsToColor(float iterations);
+	void iterationsToColor(float iterations, uint8_t& red, uint8_t& green, uint8_t& blue);
 
 	void printPalette();
 

@@ -172,47 +172,49 @@ void Palette::interpolate(uint32_t color1, uint32_t color2, uint32_t color3, uin
 	}
 }
 
-Color Palette::getColor(uint32_t const& index)
+void Palette::getColor(uint32_t const& index, uint8_t& red, uint8_t& green, uint8_t& blue)
 {
-    return Color {m_colors[index * 3 + 2], m_colors[index * 3 + 1], m_colors[index * 3]};
+	red = m_colors[index * 3 + 2];
+	green = m_colors[index * 3 + 1];
+	blue = m_colors[index * 3];
 }
 
 void Palette::printPalette()
 {
     for (size_t i = 0; i < m_steps; i++)
     {
-		Color c = getColor(i);
+		uint8_t r, g, b;
+		getColor(i, r, g, b);
 		std::cout << "c: " << i << " r: " 
-			<< c.red << " g: " << c.green << " b: "
-			<< c.blue << std::endl;
+			<< r << " g: " << g << " b: "
+			<< b << std::endl;
     }
 }
 
-Color Palette::iterationsToColor(float iterations)
+void Palette::iterationsToColor(float iterations, uint8_t& red, uint8_t& green, uint8_t& blue)
 {
 	// TODO: inner color
 	if (iterations == -1.0f)
 	{
-		return Color{0, 0, 0};
+		red = 0;
+		green = 0;
+		blue = 0;
+		return;
 	}
 	uint32_t step = static_cast<uint32_t>(iterations);
 	auto gradient = iterations - step; // how 'inbetween' the color is, between 0 and 1
 	
 	step = step % m_steps; // m_steps is the number of colors in the palette
 
-	auto baseColor = getColor(step);
-	auto newColor = getColor((step + 1) % m_steps);
-	Color inbetweenColor({});
+	uint8_t b_r, b_g, b_b, n_r, n_g, n_b;
+	getColor(step, b_r, b_g, b_b);
+	getColor((step + 1) % m_steps, n_r, n_g, n_b);
 	
 	// interpolate between baseColor and newColor
-	inbetweenColor.red = 
-		baseColor.red + (newColor.red - baseColor.red) * gradient;
+	red = b_r + (n_r -b_r) * gradient;
 
-	inbetweenColor.blue = 
-		baseColor.blue + (newColor.blue - baseColor.blue) * gradient;
+	green = b_b+ (n_b - b_b) * gradient;
 
-	inbetweenColor.green =
-		 baseColor.green + (newColor.green - baseColor.green) * gradient;
+	blue = b_g + (n_g - b_g) * gradient;
 
-	return inbetweenColor;
 }

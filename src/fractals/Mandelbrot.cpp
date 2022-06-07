@@ -1,4 +1,5 @@
 #include "Mandelbrot.hpp"
+
 #include "Complex.hpp"
 
 float Mandelbrot::getPixel(double x, double y)

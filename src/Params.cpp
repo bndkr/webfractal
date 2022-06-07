@@ -89,16 +89,15 @@ Params::Params(int argc, char** argv):
     if (vm.count("height"))
     {
         m_height = vm["height"].as<int>();
-        exit(1);
     }
     else
     {
         std::cout << "required param height not specified." << std::endl;
+        exit(1);
     }
     if (vm.count("width"))
     {
         m_width = vm["width"].as<int>();
-        exit(1);
     }
     else
     {

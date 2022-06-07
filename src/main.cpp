@@ -9,9 +9,8 @@ int main(int argc, char** argv)
 {
     try
     {
-        // std::cin.get();
         Params params(argc, argv);
-        Palette palette(params.m_palette, 90);
+        Palette palette(params.m_palette, 27);
         Generator generator(params, palette);
     }
     catch (std::runtime_error e)
