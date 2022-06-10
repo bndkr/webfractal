@@ -13,5 +13,7 @@ src/Params.cpp
 src/Params.hpp
 src/Palette.cpp
 src/Palette.hpp
+src/PngFile.cpp
+src/PngFile.hpp
 ${fractal_src} PARENT_SCOPE
 )

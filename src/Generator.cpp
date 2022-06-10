@@ -1,6 +1,7 @@
 #include "FileOps.hpp"
 #include "fractals/Mandelbrot.hpp"
 #include "Generator.hpp"
+#include "PngFile.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -13,14 +14,14 @@ Generator::Generator(Params const& params, Palette palette) : m_params(params), 
     auto height = params.m_height;
     auto width = params.m_width;
 
-    const uint32_t numBytes = width * height * 3;
+    const uint32_t numBytes = width * height * 4;
     uint8_t* p_buffer = new uint8_t[numBytes];
     if (!p_buffer)
     {
         throw std::runtime_error("unable to initialize image buffer");
     }
 
-    auto file = fileops::createBmpHeader(width, height, "fractal");
+    // auto file = fileops::createBmpHeader(width, height, "fractal");
     std::cout << "generating fractal:" << std::endl;
 
     // launch 8 threads that populate the buffer concurrently
@@ -42,8 +43,12 @@ Generator::Generator(Params const& params, Palette palette) : m_params(params), 
 	worker7.join();
 	worker8.join();
 
-    file->write((char*)p_buffer, numBytes);
-    file->close();
+    // write the png file
+    uint32_t error = lodepng_encode32_file("fractal.png", p_buffer, m_params.m_width, m_params.m_height);
+    if (error) std::cout << "error: " << lodepng_error_text(error) << std::endl;
+
+    //file->write((char*)p_buffer, numBytes);
+    //file->close();
 
     delete [] p_buffer;
 } 
@@ -82,9 +87,10 @@ void Generator::generateFractalThreaded(uint32_t offset, uint32_t divisions, uin
             getCoords(h, w, x, y);
             auto iterations = p_fractal->getPixel(x, y);
             m_palette.iterationsToColor(iterations, r, g, b);
-            p_buffer[((h * width) + w) * 3] = b;
-            p_buffer[((h * width) + w) * 3 + 1] = g;
-            p_buffer[((h * width) + w) * 3 + 2] = r;
+            p_buffer[((h * width) + w) * 4] = r;
+            p_buffer[((h * width) + w) * 4 + 1] = g;
+            p_buffer[((h * width) + w) * 4 + 2] = b;
+            p_buffer[((h * width) + w) * 4 + 3] = 0xff;
        }
     }
 }
